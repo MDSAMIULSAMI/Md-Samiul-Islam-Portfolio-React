@@ -7,6 +7,8 @@ import Projects from "./components/Projects/Projects";
 import Footer from "./components/Footer";
 import Resume from "./components/Resume/ResumeNew";
 import Achivements from "./components/Achivements/Achivements"
+import PrivacyPolicy from "./components/Legal/PrivacyPolicy";
+import TermsOfService from "./components/Legal/TermsOfService";
 import {
   BrowserRouter as Router,
   Route,
@@ -41,6 +43,8 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/achivements" element={<Achivements />} />
           <Route path="/resume" element={<Resume />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="*" element={<Navigate to="/"/>} />
         </Routes>
         <Footer />
