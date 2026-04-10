@@ -21,27 +21,27 @@ function About() {
               paddingBottom: "50px",
             }}
           >
-            <h1 style={{ fontSize: "2.1em", paddingBottom: "20px" }}>
+            <h1 style={{ fontSize: "2.1em", paddingBottom: "20px" }} className="project-heading">
               Know Who <strong className="purple">I'm</strong>
             </h1>
             <Aboutcard />
           </Col>
           <Col
             md={5}
-            style={{ paddingTop: "20px", paddingBottom: "50px" }}
+            style={{ paddingTop: "60px", paddingBottom: "50px" }}
             className="about-img"
           >
-            <img src="https://i.ibb.co.com/ykL49Mr/about.png" alt="Laptop guy" className="img-fluid" />
+            <img src="https://i.ibb.co.com/ykL49Mr/about.png" alt="about" className="img-fluid" style={{ maxHeight: "400px" }} />
           </Col>
         </Row>
-        <h1 className="project-heading">
-         <strong className="purple">Programming Languages & Framework </strong>
-        </h1>
 
+        <h1 className="project-heading" style={{ paddingBottom: "10px" }}>
+          Programming <strong className="purple">Languages & Frameworks</strong>
+        </h1>
         <Techstack />
 
-        <h1 className="project-heading">
-          <strong className="purple">Tools</strong>
+        <h1 className="project-heading" style={{ paddingBottom: "10px" }}>
+          <strong className="purple">Tools</strong> I Use
         </h1>
         <Toolstack />
 

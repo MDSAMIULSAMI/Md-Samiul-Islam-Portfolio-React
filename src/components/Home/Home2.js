@@ -20,11 +20,19 @@ function Home2() {
             </h1> */}
             <p className="home-about-body">
             With a Bachelor of Science in <span className="purple">Computer Science and Engineering </span>
-            from <span className="green"> Green University of Bangladesh</span> and 
-            basic experience in <span className="purple"> Frontend & Backend </span> Development, 
-            <span className="purple"> Machine Learning </span> and <span className="purple">Web Application </span> projects. 
-            I am confident in my ability to contribute effectively to the community. From 01 October to 01 December 2023 I have worked as <span className="purple"> Frontend Developer 
-            </span> in <span className="purple">"Unicorn Software and Solution Ltd."</span>
+            from <span className="green"> Green University of Bangladesh</span>,
+            I'm currently working as a <span className="purple">Full Stack Engineer </span>
+            at <span className="purple">DataCrata</span>, where I build
+            <span className="purple"> RAG and Agentic AI Applications</span>, integrate
+            <span className="purple"> LLM Models</span> into existing systems, and evaluate models with
+            <span className="purple"> LangSmith</span>.
+            <br /><br />
+            Previously, I served as a <span className="purple">Junior Software Engineer </span>
+            at <span className="purple">Coder Orbit</span>, working with
+            <span className="purple"> Vue.js, Nuxt.js, Next.js </span> and <span className="purple">Laravel</span>.
+            My passion lies in exploring <span className="purple">web development</span>,
+            <span className="purple"> backend engineering</span>, and the potential of
+            <span className="purple"> machine learning</span> to solve real-world problems.
             </p>
           </div>
           {/* <Col md={4} className="myAvtar">

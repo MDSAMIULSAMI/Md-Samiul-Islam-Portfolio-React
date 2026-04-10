@@ -12,9 +12,9 @@ function Footer() {
   let year = date.getFullYear();
   return (
     <Container fluid className="footer">
-      <Row>
+      <Row className="align-items-center">
         <Col md="4" className="footer-copywright">
-          <h3>Developed by Md. Samiul Islam</h3>
+          <h3>Designed & Built by Md. Samiul Islam</h3>
         </Col>
         <Col md="4" className="footer-copywright">
           <h3>Copyright © {year}</h3>
@@ -24,7 +24,7 @@ function Footer() {
             <li className="social-icons">
               <a
                 href="https://github.com/MDSAMIULSAMI"
-                style={{ color: "white" }}
+                style={{ color: "rgba(255,255,255,0.7)" }}
                 target="_blank" 
                 rel="noopener noreferrer"
               >
@@ -34,7 +34,7 @@ function Footer() {
             <li className="social-icons">
               <a
                 href="https://codeforces.com/profile/Md_Samiul_Islam"
-                style={{ color: "white" }}
+                style={{ color: "rgba(255,255,255,0.7)" }}
                 target="_blank" 
                 rel="noopener noreferrer"
               >
@@ -44,7 +44,7 @@ function Footer() {
             <li className="social-icons">
               <a
                 href="https://www.linkedin.com/in/md-samiul-islam-17738a1b9/"
-                style={{ color: "white" }}
+                style={{ color: "rgba(255,255,255,0.7)" }}
                 target="_blank" 
                 rel="noopener noreferrer"
               >
@@ -54,7 +54,7 @@ function Footer() {
             <li className="social-icons">
               <a
                 href="https://www.instagram.com/__samiul__sami__/"
-                style={{ color: "white" }}
+                style={{ color: "rgba(255,255,255,0.7)" }}
                 target="_blank" 
                 rel="noopener noreferrer"
               >

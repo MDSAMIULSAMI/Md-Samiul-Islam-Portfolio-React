@@ -11,27 +11,37 @@ function AboutCard() {
             Greetings Everyone, I'm <span className="purple">Md. Samiul Islam </span>
             from <span className="purple"> Dhaka, Bangladesh.</span>
             <br />
-            I am currently fresh graduated from <span className="green">Green University of Bangladesh</span>.
+            I graduated with a B.Sc. in CSE from <span className="green">Green University of Bangladesh</span> (CGPA: 3.30).
+            <br /><br />
+            Currently, I'm working as a <span className="purple">Full Stack Engineer </span>
+            at <span className="purple">DataCrata</span>, building RAG and Agentic AI applications with
+            <span className="purple"> FastAPI, React, and LLM integrations</span>.
             <br />
-            From 01 October to 01 December 2023 I have worked as <span className="purple"> Frontend Developer </span> in <span className="purple">"Unicorn Software and Solution Ltd."</span>
+            Previously, I worked as a <span className="purple">Junior Software Engineer </span>
+            at <span className="purple">Coder Orbit</span> (Vue.js, Nuxt.js, Next.js, Laravel) and as a
+            <span className="purple"> Frontend Developer Intern </span>
+            at <span className="purple">Unicorn Software Solutions Ltd.</span>
             <br />
             <br />
             Apart from coding, some of my field of interest are:
           </p>
           <ul>
             <li className="about-activity">
-              <ImPointRight /> Watching Anime
+              <ImPointRight /> Machine Learning & Deep Learning
             </li>
             <li className="about-activity">
-              <ImPointRight /> Playing Games
+              <ImPointRight /> Natural Language Processing (NLP) Research
             </li>
             <li className="about-activity">
-              <ImPointRight /> Playing Guitar
+              <ImPointRight /> AI Application Development & Workflows
+            </li>
+            <li className="about-activity">
+              <ImPointRight /> Generative AI (Stable Diffusion Models)
             </li>
           </ul>
 
           <p style={{ color: "rgb(155 126 172)" }}>
-          “Artificial Intelligence, deep learning, machine learning — whatever you're doing if you don't understand it — learn it. Because otherwise you're going to be a dinosaur within 3 years.”{" "}
+          "Artificial Intelligence, deep learning, machine learning — whatever you're doing if you don't understand it — learn it. Because otherwise you're going to be a dinosaur within 3 years."{" "}
           </p>
           <footer className="blockquote-footer">Mark Cuban</footer>
         </blockquote>

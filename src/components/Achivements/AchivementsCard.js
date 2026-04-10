@@ -1,7 +1,8 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { BiPaperclip } from "react-icons/bi";
+import { BiLinkExternal } from "react-icons/bi";
+
 function AchivementsCard(props) {
   return (
     <Card className="achivement-card-view">
@@ -12,11 +13,9 @@ function AchivementsCard(props) {
           {props.description}
         </Card.Text>
         <Button variant="primary" href={props.vLink} target="_blank">
-          <BiPaperclip /> &nbsp;
+          <BiLinkExternal /> &nbsp;
           Verify
         </Button>
-        {"\n"}
-        {"\n"}
       </Card.Body>
     </Card>
   );
