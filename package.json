@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "start": "vite",
     "build": "vite build",
     "build:ghpages": "VITE_BASE=/samiuls-portfolio-react/ vite build",
+    "start": "node server.js",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",

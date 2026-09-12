@@ -47,6 +47,9 @@ sami-portfolio/
 ├── index.html                  # Vite entry document
 ├── vite.config.js              # base path, Tailwind, SPA 404 fallback
 ├── vercel.json                 # SPA rewrites and asset caching for Vercel
+├── railway.json                # build and start commands for Railway
+├── nixpacks.toml               # keeps devDependencies during Railway's install
+├── server.js                   # dependency free static server for container hosts
 ├── public/                     # favicon, manifest, robots
 └── src/
     ├── main.jsx
@@ -72,6 +75,7 @@ npm install          # Node 20.19+ / 22.12+ recommended
 npm run dev          # http://localhost:5173
 npm run build        # outputs to dist/, served from the root path
 npm run preview      # preview the production build
+npm start            # serve dist/ the way a container host does (build first)
 npm test             # run the Vitest suite
 npm run deploy       # build for the gh-pages subpath and publish
 ```
@@ -87,14 +91,38 @@ through `import.meta.env.BASE_URL`.
 
 | Host | Command | Base | SPA routing |
 |------|---------|------|-------------|
-| **Vercel / Netlify / custom domain** | `npm run build` (Vercel runs this automatically) | `/` | `vercel.json` rewrites everything to `/index.html` |
+| **Vercel / Netlify / custom domain** | `npm run build` (run automatically) | `/` | `vercel.json` rewrites everything to `/index.html` |
+| **Railway** (or any container host) | `npm run build`, then `node server.js` | `/` | `server.js` falls back to `index.html` |
 | **GitHub Pages** (project subpath) | `npm run deploy` | `/samiuls-portfolio-react/` | a `404.html` copy of `index.html` is emitted on build |
 
-Vercel needs no configuration beyond the committed `vercel.json`: import the
-repo and deploy. Do not set `VITE_BASE` there, the default `/` is correct.
+Vercel and Railway both need no setup beyond the committed `vercel.json` and
+`railway.json` / `nixpacks.toml`. Do not set `VITE_BASE` on either, the default
+`/` is correct. For a different GitHub Pages repo name, change `build:ghpages`
+in `package.json`.
 
-For a different GitHub Pages repo name, change `build:ghpages` in
-`package.json`.
+### Running on Railway
+
+This is a static build, so the container needs a real HTTP server rather than
+Vite. `server.js` is a dependency free static server that:
+
+- listens on `$PORT` and binds `0.0.0.0`, which the health check requires
+- serves `dist/` and falls back to `index.html` for client side routes
+- gzips text responses (the main bundle drops from 487 kB to 155 kB)
+- marks hashed assets `immutable` and the HTML shell `no-cache`
+- exits cleanly on `SIGTERM` so a redeploy is not logged as a crash
+
+Two things bite on Railway and both are handled in the repo:
+
+1. `npm start` must not be `vite`. The dev server ignores `$PORT` and binds to
+   localhost, so the health check never passes and the container restart loops.
+   `start` is `node server.js`.
+2. Railway sets `NODE_ENV=production`, and `npm ci` then skips
+   devDependencies, so `vite` goes missing and the build fails with
+   `vite: not found`. `nixpacks.toml` pins the install to
+   `npm ci --include=dev`.
+
+Railway's free tier is fine for this, but a static host such as Vercel, Netlify
+or GitHub Pages is a better fit for a site with no backend.
 
 ## Pages
 

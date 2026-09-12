@@ -1,0 +1,5 @@
+# Vite lives in devDependencies, so the install phase must keep them even when
+# Railway sets NODE_ENV=production. Without this the build fails with
+# "vite: not found".
+[phases.install]
+cmds = ["npm ci --include=dev"]
