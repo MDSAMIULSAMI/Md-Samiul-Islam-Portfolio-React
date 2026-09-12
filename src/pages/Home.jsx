@@ -87,7 +87,7 @@ function Home() {
                   rel="noreferrer"
                   className={buttonClass({ variant: "ghost" })}
                 >
-                  <Download size={18} /> Download CV
+                  <Download size={18} /> Resume
                 </a>
               </div>
             </Reveal>
