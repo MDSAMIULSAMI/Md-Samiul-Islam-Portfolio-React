@@ -4,13 +4,15 @@ import tailwindcss from "@tailwindcss/vite";
 import { copyFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-// GitHub Pages serves this repo from a project subpath. Change to "/" if you
-// move the site to a custom domain or a <user>.github.io repo.
-const BASE = process.env.VITE_BASE ?? "/samiuls-portfolio-react/";
+// Root by default, which is what Vercel, Netlify and a custom domain all serve
+// from. GitHub Pages serves this repo from a project subpath instead, so the
+// `deploy` script sets VITE_BASE=/samiuls-portfolio-react/ for that build only.
+const BASE = process.env.VITE_BASE || "/";
 
 /**
  * GitHub Pages has no SPA rewrite, so it answers unknown paths with 404.html.
  * Shipping a copy of index.html there makes deep links and refreshes work.
+ * Vercel uses the rewrite in vercel.json instead and never reaches this file.
  */
 function spaFallback() {
   return {

@@ -46,6 +46,7 @@ so updating the CV means editing a single file.
 sami-portfolio/
 ├── index.html                  # Vite entry document
 ├── vite.config.js              # base path, Tailwind, SPA 404 fallback
+├── vercel.json                 # SPA rewrites and asset caching for Vercel
 ├── public/                     # favicon, manifest, robots
 └── src/
     ├── main.jsx
@@ -69,22 +70,31 @@ sami-portfolio/
 ```bash
 npm install          # Node 20.19+ / 22.12+ recommended
 npm run dev          # http://localhost:5173
-npm run build        # outputs to dist/
+npm run build        # outputs to dist/, served from the root path
 npm run preview      # preview the production build
 npm test             # run the Vitest suite
-npm run deploy       # build and publish dist/ to the gh-pages branch
+npm run deploy       # build for the gh-pages subpath and publish
 ```
 
 > The install may need `--legacy-peer-deps` on npm 10.9, which trips over
-> Vitest's optional peer set.
+> Vitest's optional peer set. `npm ci` is unaffected.
 
-### Deploying somewhere else
+### Deploying
 
-`vite.config.js` sets `BASE` to `/samiuls-portfolio-react/` because GitHub Pages
-serves this repo from a project subpath. For a custom domain or a
-`<user>.github.io` repo, set `VITE_BASE=/` or change the constant. The router
-picks the value up through `import.meta.env.BASE_URL`, and a `404.html` copy of
-`index.html` is emitted on build so deep links and refreshes resolve.
+The base path is the only thing that differs between hosts, and it is driven by
+the `VITE_BASE` environment variable. The router reads the same value back
+through `import.meta.env.BASE_URL`.
+
+| Host | Command | Base | SPA routing |
+|------|---------|------|-------------|
+| **Vercel / Netlify / custom domain** | `npm run build` (Vercel runs this automatically) | `/` | `vercel.json` rewrites everything to `/index.html` |
+| **GitHub Pages** (project subpath) | `npm run deploy` | `/samiuls-portfolio-react/` | a `404.html` copy of `index.html` is emitted on build |
+
+Vercel needs no configuration beyond the committed `vercel.json`: import the
+repo and deploy. Do not set `VITE_BASE` there, the default `/` is correct.
+
+For a different GitHub Pages repo name, change `build:ghpages` in
+`package.json`.
 
 ## Pages
 

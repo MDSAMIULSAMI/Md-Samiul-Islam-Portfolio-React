@@ -7,11 +7,11 @@
     "dev": "vite",
     "start": "vite",
     "build": "vite build",
+    "build:ghpages": "VITE_BASE=/samiuls-portfolio-react/ vite build",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "eslint .",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build:ghpages",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
@@ -43,5 +43,8 @@
     ">0.2%",
     "not dead",
     "not op_mini all"
-  ]
+  ],
+  "engines": {
+    "node": ">=20.19"
+  }
 }
