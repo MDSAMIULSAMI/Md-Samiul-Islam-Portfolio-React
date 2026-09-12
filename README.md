@@ -46,7 +46,6 @@ so updating the CV means editing a single file.
 sami-portfolio/
 ├── index.html                  # Vite entry document
 ├── vite.config.js              # base path, Tailwind, SPA 404 fallback
-├── vercel.json                 # SPA rewrites and asset caching for Vercel
 ├── railway.json                # build and start commands for Railway
 ├── nixpacks.toml               # keeps devDependencies during Railway's install
 ├── server.js                   # dependency free static server for container hosts
@@ -91,14 +90,12 @@ through `import.meta.env.BASE_URL`.
 
 | Host | Command | Base | SPA routing |
 |------|---------|------|-------------|
-| **Vercel / Netlify / custom domain** | `npm run build` (run automatically) | `/` | `vercel.json` rewrites everything to `/index.html` |
 | **Railway** (or any container host) | `npm run build`, then `node server.js` | `/` | `server.js` falls back to `index.html` |
 | **GitHub Pages** (project subpath) | `npm run deploy` | `/samiuls-portfolio-react/` | a `404.html` copy of `index.html` is emitted on build |
 
-Vercel and Railway both need no setup beyond the committed `vercel.json` and
-`railway.json` / `nixpacks.toml`. Do not set `VITE_BASE` on either, the default
-`/` is correct. For a different GitHub Pages repo name, change `build:ghpages`
-in `package.json`.
+Railway needs no setup beyond the committed `railway.json` and `nixpacks.toml`.
+Do not set `VITE_BASE` there, the default `/` is correct. For a different
+GitHub Pages repo name, change `build:ghpages` in `package.json`.
 
 ### Running on Railway
 
@@ -121,8 +118,8 @@ Two things bite on Railway and both are handled in the repo:
    `vite: not found`. `nixpacks.toml` pins the install to
    `npm ci --include=dev`.
 
-Railway's free tier is fine for this, but a static host such as Vercel, Netlify
-or GitHub Pages is a better fit for a site with no backend.
+Railway's free tier is fine for this. GitHub Pages is also set up as a
+zero cost fallback via `npm run deploy`.
 
 ## Pages
 
