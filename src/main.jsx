@@ -9,6 +9,10 @@ import "@fontsource-variable/sora/wght.css";
 import "@fontsource-variable/inter/wght.css";
 import "@fontsource-variable/jetbrains-mono/wght.css";
 
+// Sizing rules the smooth scroller needs on <html>/<body>. Imported before
+// index.css so our own base layer stays the last word.
+import "lenis/dist/lenis.css";
+
 import App from "./App.jsx";
 import "./index.css";
 

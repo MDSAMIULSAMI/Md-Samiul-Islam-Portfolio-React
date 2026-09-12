@@ -4,6 +4,7 @@ import { AnimatePresence, MotionConfig } from "motion/react";
 import Navbar from "./components/layout/Navbar.jsx";
 import Footer from "./components/layout/Footer.jsx";
 import PageTransition from "./components/layout/PageTransition.jsx";
+import SmoothScroll from "./components/layout/SmoothScroll.jsx";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import Experience from "./pages/Experience.jsx";
@@ -63,13 +64,15 @@ function AnimatedRoutes() {
 function App() {
   return (
     <MotionConfig reducedMotion="user">
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
-        <div className="flex min-h-screen flex-col">
-          <Navbar />
-          <AnimatedRoutes />
-          <Footer />
-        </div>
-      </BrowserRouter>
+      <SmoothScroll>
+        <BrowserRouter basename={import.meta.env.BASE_URL}>
+          <div className="flex min-h-screen flex-col">
+            <Navbar />
+            <AnimatedRoutes />
+            <Footer />
+          </div>
+        </BrowserRouter>
+      </SmoothScroll>
     </MotionConfig>
   );
 }

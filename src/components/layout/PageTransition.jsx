@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { motion } from "motion/react";
+import { useLenis } from "lenis/react";
 
 /**
  * Wraps each route so AnimatePresence can cross fade between them.
@@ -7,9 +8,18 @@ import { motion } from "motion/react";
  * jump hidden underneath the fade instead of happening mid animation.
  */
 function PageTransition({ children }) {
+  const lenis = useLenis();
+
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-  }, []);
+    // Lenis tracks its own scroll value, so resetting through it rather than
+    // through `window` also drops whatever momentum the outgoing page still
+    // had. `immediate` skips the easing so the jump stays under the fade, and
+    // `force` lets it through even while the scroller is stopped.
+    // `lenis` is undefined for the first render of the first route, since a
+    // child's effect runs before its provider's; the native call covers that.
+    if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
+    else window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [lenis]);
 
   return (
     <motion.main

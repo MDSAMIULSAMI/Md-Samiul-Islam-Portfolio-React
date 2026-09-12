@@ -36,8 +36,15 @@
   }
 
   html {
+    /* Fallback for the moment before the smooth scroller boots, and for the
+       case where it never does. Lenis puts `.lenis` on <html> once it owns
+       the scroll, and the two easings would otherwise fight each other. */
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+  }
+
+  html.lenis {
+    scroll-behavior: auto;
   }
 
   body {
@@ -49,7 +56,12 @@
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* `clip` contains stray horizontal overflow without turning <body> into a
+       scroll container, which is what `hidden` does and what the smooth
+       scroller then has to compete with. `hidden` stays as the fallback for
+       browsers that do not know `clip`. */
     overflow-x: hidden;
+    overflow-x: clip;
   }
 
   h1,
