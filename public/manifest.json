@@ -1,7 +1,7 @@
 {
   "short_name": "Samiul Islam",
-  "name": "Md. Samiul Islam | Software Engineer",
-  "description": "Portfolio of Md. Samiul Islam, a software engineer building FastAPI backends, React frontends and LLM powered product features.",
+  "name": "Md. Samiul Islam | Software Engineer in Dhaka",
+  "description": "Software engineer building FastAPI backends, React frontends and LLM powered product features. Selected work, research and a resume you can download.",
   "icons": [
     {
       "src": "favicon.png",
@@ -12,5 +12,6 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#08080c",
-  "background_color": "#08080c"
+  "background_color": "#08080c",
+  "lang": "en"
 }

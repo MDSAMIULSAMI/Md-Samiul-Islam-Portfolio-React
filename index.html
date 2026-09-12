@@ -4,30 +4,44 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="./favicon.png" />
+    <link rel="apple-touch-icon" href="./favicon.png" />
     <link rel="manifest" href="./manifest.json" />
     <meta name="theme-color" content="#08080c" />
     <meta name="color-scheme" content="dark" />
 
-    <title>Md. Samiul Islam | Software Engineer</title>
-    <meta
-      name="description"
-      content="Md. Samiul Islam is a software engineer in Dhaka building FastAPI backends, React frontends and LLM powered product features."
-    />
+    <!--
+      Default head, and on every route but "/" the build overwrites these in a
+      per route copy of this file (see prerenderHeads in vite.config.js).
+      src/components/seo/Seo.jsx then keeps them in step during client side
+      navigation. They are written out flat, one attribute pair per tag, in the
+      order the build's regexes expect: reformat a tag and the build fails
+      loudly rather than shipping the wrong card.
+
+      %SITE_URL% is substituted at build time with the deploy origin.
+    -->
+    <title>Md. Samiul Islam | Software Engineer in Dhaka</title>
+    <meta name="description" content="Software engineer building FastAPI backends, React frontends and LLM powered product features. Selected work, research and a resume you can download." />
+    <meta name="author" content="Md. Samiul Islam" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="%SITE_URL%/" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Md. Samiul Islam | Software Engineer" />
-    <meta
-      property="og:description"
-      content="Software engineer building FastAPI backends, React frontends and LLM powered product features."
-    />
-    <meta property="og:image" content="https://avatars.githubusercontent.com/u/95273981?v=4" />
+    <meta property="og:site_name" content="Md. Samiul Islam" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Md. Samiul Islam | Software Engineer in Dhaka" />
+    <meta property="og:description" content="Software engineer building FastAPI backends, React frontends and LLM powered product features. Selected work, research and a resume you can download." />
+    <meta property="og:url" content="%SITE_URL%/" />
+    <meta property="og:image" content="%SITE_URL%/og-cover.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Md. Samiul Islam, Software Engineer building FastAPI backends, React frontends and LLM powered features." />
+
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Md. Samiul Islam | Software Engineer" />
-    <meta
-      name="twitter:description"
-      content="Software engineer building FastAPI backends, React frontends and LLM powered product features."
-    />
-    <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/95273981?v=4" />
+    <meta name="twitter:title" content="Md. Samiul Islam | Software Engineer in Dhaka" />
+    <meta name="twitter:description" content="Software engineer building FastAPI backends, React frontends and LLM powered product features. Selected work, research and a resume you can download." />
+    <meta name="twitter:image" content="%SITE_URL%/og-cover.png" />
+    <meta name="twitter:image:alt" content="Md. Samiul Islam, Software Engineer building FastAPI backends, React frontends and LLM powered features." />
   </head>
   <body>
     <div id="root"></div>

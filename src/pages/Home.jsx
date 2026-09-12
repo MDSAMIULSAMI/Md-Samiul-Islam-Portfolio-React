@@ -9,7 +9,7 @@ import Card from "../components/ui/Card.jsx";
 import { buttonClass } from "../components/ui/Button.jsx";
 import { profile, socials, stats, projects, experience } from "../data/profile.js";
 import resumePdf from "../Assets/Resume/Md_Samiuls_Resume.pdf";
-import portrait from "../Assets/portrait.jpg";
+import portrait from "../Assets/SamGermany.jpg";
 
 const featured = projects.filter((p) => p.featured);
 
@@ -17,7 +17,7 @@ function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="bleed flex min-h-[100svh] items-center pb-16 pt-24 lg:pb-24 lg:pt-32">
+      <section className="bleed flex min-h-svh items-center pb-16 pt-24 lg:pb-24 lg:pt-32">
         {/* Two explicit columns so the portrait always sits beside the intro.
             On phones it pairs with the name block only and the body copy runs
             full width underneath; from lg it spans both rows as before. */}

@@ -49,7 +49,17 @@ async function resolveFile(urlPath) {
   if (target !== ROOT && !target.startsWith(ROOT + sep)) return null; // traversal
   try {
     const stat = await fs.stat(target);
-    return stat.isFile() ? target : null;
+    if (stat.isFile()) return target;
+    // A directory means the build prerendered that route's <head> into
+    // dist/<route>/index.html. Serving it is what gives /projects its own
+    // title, description and share card in the HTML response, which is the
+    // only version a crawler that does not run JavaScript ever sees.
+    if (stat.isDirectory()) {
+      const index = join(target, "index.html");
+      const indexStat = await fs.stat(index);
+      return indexStat.isFile() ? index : null;
+    }
+    return null;
   } catch {
     return null;
   }

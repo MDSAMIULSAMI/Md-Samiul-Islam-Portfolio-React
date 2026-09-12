@@ -38,29 +38,34 @@ so updating the CV means editing a single file.
 | **Fonts** | Sora, Inter, JetBrains Mono, self hosted via `@fontsource-variable` |
 | **PDF** | `react-pdf` 11, lazy loaded so pdf.js stays out of the main bundle |
 | **Testing** | Vitest, Testing Library, jsdom |
-| **Deploy** | GitHub Pages via `gh-pages` |
+| **Deploy** | Railway (`server.js`), GitHub Pages via `gh-pages` |
+| **SEO** | Per route `<head>` prerendered at build, JSON-LD, generated sitemap |
 
 ## Project structure
 
 ```
 sami-portfolio/
 ├── index.html                  # Vite entry document
-├── vite.config.js              # base path, Tailwind, SPA 404 fallback
+├── vite.config.js              # base path, Tailwind, SPA 404 fallback,
+│                               # per route <head> prerender, sitemap, robots
 ├── railway.json                # build and start commands for Railway
 ├── nixpacks.toml               # keeps devDependencies during Railway's install
 ├── server.js                   # dependency free static server for container hosts
-├── public/                     # favicon, manifest, robots
+├── scripts/                    # one off generators (the social share card)
+├── public/                     # favicon, manifest, og-cover.png
 └── src/
     ├── main.jsx
     ├── App.jsx                 # router + AnimatePresence page transitions
     ├── index.css               # Tailwind import and @theme design tokens
     ├── data/profile.js         # single source of truth for all content
+    ├── data/seo.js             # per route titles, descriptions, JSON-LD
     ├── Assets/
     │   ├── media/              # project, paper and certificate images
-    │   ├── portrait.jpg
+    │   ├── SamGermany.jpg      # hero portrait, also the share card photo
     │   └── Resume/
     ├── components/
-    │   ├── layout/             # Navbar, Footer, PageTransition
+    │   ├── layout/             # Navbar, Footer, PageTransition, SmoothScroll
+    │   ├── seo/                # Seo, the client side <head> sync
     │   └── ui/                 # Button, Card, Reveal, SectionHead,
     │                           # ProjectCard, SocialRow, LegalPage, BrandIcons
     └── pages/                  # Home, About, Experience, Projects,
@@ -132,6 +137,53 @@ zero cost fallback via `npm run deploy`.
 | **Achievements** | `/achievements` | Research papers and course certifications |
 | **Resume** | `/resume` | Embedded PDF viewer with responsive page fitting |
 | **Legal** | `/privacy-policy`, `/terms-of-service` | Privacy policy and terms |
+
+## SEO
+
+A single page app ships one `<head>`, so without help every route would
+advertise the home page's title, description and share card. Three layers keep
+that from happening, and all three read the same rows in
+[`src/data/seo.js`](src/data/seo.js):
+
+1. **`index.html`** carries the site level defaults. Social scrapers
+   (Facebook, LinkedIn, Slack) never run JavaScript, so whatever is in the
+   HTML response is all they will ever see.
+2. **The build** writes a copy of the shell per route to
+   `dist/<route>/index.html` with that route's tags already substituted, and
+   emits `sitemap.xml` and `robots.txt`. `server.js` serves those copies, so
+   `GET /projects` returns HTML that already says *Projects*. If a tag in
+   `index.html` is reformatted so the substitution no longer matches, the
+   build **fails** rather than shipping the wrong card.
+3. **[`Seo.jsx`](src/components/seo/Seo.jsx)** updates the same tags in place
+   during client side navigation. It mutates rather than renders them: React 19
+   would hoist a second `<title>` and a second description alongside the ones
+   already in the document.
+
+`<head>` also carries JSON-LD (`Person`, `WebSite`, `ProfilePage`) injected at
+build time, since structured data is read by exactly the crawlers that would
+not execute the JavaScript needed to create it.
+
+### The site URL
+
+Canonical tags, `og:url` and `sitemap.xml` all need an absolute origin, and
+pointing them at the wrong host is worse than omitting them. The build resolves
+it in order:
+
+| Source | When |
+|--------|------|
+| `VITE_SITE_URL` | A custom domain, or any host not covered below |
+| `RAILWAY_PUBLIC_DOMAIN` | Injected by Railway into its own build, so the deploy needs no setup |
+| `https://mdsamiulsami.github.io/samiuls-portfolio-react` | Only the `build:ghpages` build |
+| `http://localhost:5173` | `npm run dev` |
+
+### The share card
+
+`public/og-cover.png` is the 1200x630 image every platform shows when the site
+is shared. It is committed, and regenerated with `npm run og` when the wording,
+the portrait or the palette changes. The generator renders the card with the
+site's own fonts and tokens and screenshots it with whichever Chromium build is
+already installed, which keeps a headless browser out of `devDependencies` for
+a file that changes once a year.
 
 ## Design notes
 

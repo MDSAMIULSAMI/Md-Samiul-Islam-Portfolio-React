@@ -5,6 +5,7 @@ import Navbar from "./components/layout/Navbar.jsx";
 import Footer from "./components/layout/Footer.jsx";
 import PageTransition from "./components/layout/PageTransition.jsx";
 import SmoothScroll from "./components/layout/SmoothScroll.jsx";
+import Seo from "./components/seo/Seo.jsx";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import Experience from "./pages/Experience.jsx";
@@ -16,7 +17,7 @@ import LegalTerms from "./pages/LegalTerms.jsx";
 // pdf.js is heavy, so it only loads when someone opens /resume.
 const Resume = lazy(() => import("./pages/Resume.jsx"));
 
-const PAGES = [
+export const PAGES = [
   { path: "/", element: <Home /> },
   { path: "/about", element: <About /> },
   { path: "/experience", element: <Experience /> },
@@ -39,6 +40,7 @@ function AnimatedRoutes() {
             path={path}
             element={
               <PageTransition>
+                <Seo path={path} />
                 <Suspense
                   fallback={
                     <div className="grid min-h-[60vh] place-items-center font-mono text-sm text-faint">
