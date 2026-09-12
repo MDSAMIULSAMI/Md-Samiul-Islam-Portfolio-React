@@ -17,12 +17,15 @@ const SOCIALS = [
   { href: socials.instagram, label: "Instagram", Icon: InstagramIcon },
 ];
 
+const [emailLocal, emailDomain] = profile.email.split("@");
+
 function Footer() {
   const year = new Date().getFullYear();
 
   return (
     <footer className="mt-auto border-t border-line bg-ink-soft">
-      <div className="bleed grid grid-cols-2 gap-8 py-12 lg:grid-cols-4">
+      {/* contact column gets the wider track so the email address fits on one line */}
+      <div className="bleed grid grid-cols-[0.85fr_1.15fr] gap-8 py-12 lg:grid-cols-4">
         <div className="col-span-2 flex flex-col gap-4">
           <Link to="/" className="inline-flex items-center gap-3 font-display text-base font-bold text-heading">
             <span className="grid size-8 place-items-center rounded-[9px] bg-accent text-sm font-extrabold text-accent-fg">
@@ -71,8 +74,14 @@ function Footer() {
           </h4>
           <ul className="grid gap-2.5">
             <li>
-              <a href={socials.email} className="block break-all text-xs text-muted transition-colors hover:text-accent sm:text-sm">
-                {profile.email}
+              {/* <wbr> after the @ so a narrow column breaks the address where
+                  it reads naturally instead of mid word */}
+              <a
+                href={socials.email}
+                className="block text-xs break-words text-muted transition-colors hover:text-accent sm:text-sm"
+              >
+                {emailLocal}@<wbr />
+                {emailDomain}
               </a>
             </li>
             <li>
@@ -85,20 +94,21 @@ function Footer() {
         </div>
       </div>
 
-      {/* extra bottom padding on phones so the floating dock never covers this */}
-      <div className="bleed flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5 pb-24 text-[0.82rem] text-faint lg:pb-5">
-        <span>
+      {/* One row at every width: nowrap plus labels that shorten on phones.
+          Extra bottom padding so the floating dock never covers this. */}
+      <div className="bleed flex flex-nowrap items-center justify-between gap-3 border-t border-line pt-5 pb-24 text-[0.72rem] text-faint sm:text-[0.82rem] lg:pb-5">
+        <span className="whitespace-nowrap">
           &copy; {year} {profile.name}
         </span>
-        <span className="flex flex-wrap items-center gap-3">
+        <span className="flex flex-nowrap items-center gap-2 whitespace-nowrap sm:gap-3">
           <Link to="/privacy-policy" className="transition-colors hover:text-accent">
-            Privacy Policy
+            Privacy<span className="hidden sm:inline"> Policy</span>
           </Link>
           <span aria-hidden="true" className="opacity-40">
             /
           </span>
           <Link to="/terms-of-service" className="transition-colors hover:text-accent">
-            Terms of Service
+            Terms<span className="hidden sm:inline"> of Service</span>
           </Link>
         </span>
       </div>
