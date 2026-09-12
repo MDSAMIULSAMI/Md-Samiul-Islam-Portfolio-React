@@ -1,8 +1,9 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { copyFileSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { dirname, extname, join, resolve } from "node:path";
+import { brotliCompressSync, constants, gzipSync } from "node:zlib";
 import { PAGE_SEO, indexablePaths, structuredData } from "./src/data/seo.js";
 
 // Root by default, which is what Railway and a custom domain serve from.
@@ -200,6 +201,79 @@ function seoFiles() {
   };
 }
 
+/**
+ * Writes a .br and a .gz beside every compressible build artefact.
+ *
+ * server.js serves those bytes straight off disk. Compressing per request
+ * instead cost about 18ms of CPU on the main bundle and held four cores at
+ * roughly 250 req/s, which is a small container's entire capacity spent
+ * recomputing an answer that never changes. Doing it here happens once, and
+ * affords the slowest and smallest settings a request handler could never
+ * justify, which is also what makes brotli worth offering at all.
+ *
+ * Must run last: prerenderHeads and seoFiles write files of their own in
+ * closeBundle, and those need compressing too. Every hook here is synchronous,
+ * so plugin order is enough to guarantee it.
+ */
+function precompress() {
+  // Kept in step with COMPRESSIBLE in server.js. Formats that arrive already
+  // compressed, which is every image, font and the PDF, only grow.
+  const EXTENSIONS = new Set([
+    ".html", ".js", ".mjs", ".css", ".json", ".svg", ".txt", ".xml", ".map", ".webmanifest",
+  ]);
+  // Under about a kilobyte the saving is a rounding error and a gzip header can
+  // make the file bigger, so those are left as they are.
+  const MIN_BYTES = 1024;
+
+  return {
+    name: "precompress-assets",
+    // vitest loads this config too, and its teardown fires closeBundle as
+    // well, which would recompress dist on every test run.
+    apply: "build",
+    closeBundle() {
+      let count = 0;
+      let before = 0;
+      let after = 0;
+
+      const walk = (dir) => {
+        for (const entry of readdirSync(dir, { withFileTypes: true })) {
+          const path = join(dir, entry.name);
+          if (entry.isDirectory()) {
+            walk(path);
+            continue;
+          }
+          if (!EXTENSIONS.has(extname(entry.name).toLowerCase())) continue;
+
+          const raw = readFileSync(path);
+          if (raw.length < MIN_BYTES) continue;
+
+          const br = brotliCompressSync(raw, {
+            params: {
+              [constants.BROTLI_PARAM_QUALITY]: constants.BROTLI_MAX_QUALITY,
+              [constants.BROTLI_PARAM_SIZE_HINT]: raw.length,
+            },
+          });
+          writeFileSync(`${path}.br`, br);
+          writeFileSync(`${path}.gz`, gzipSync(raw, { level: 9 }));
+
+          count += 1;
+          before += raw.length;
+          after += br.length;
+        }
+      };
+
+      walk(resolve(process.cwd(), "dist"));
+
+      const kb = (bytes) => `${(bytes / 1024).toFixed(0)} kB`;
+      console.log(
+        `\n\x1b[32m✓\x1b[0m precompressed ${count} files: ` +
+          `${kb(before)} → ${kb(after)} brotli ` +
+          `(${(100 - (after / before) * 100).toFixed(0)}% smaller)`
+      );
+    },
+  };
+}
+
 export default defineConfig(({ command }) => ({
   base: command === "build" ? BASE : "/",
   define: {
@@ -207,7 +281,15 @@ export default defineConfig(({ command }) => ({
     // client side navigation match what the build baked into the static heads.
     __SITE_URL__: JSON.stringify(SITE_URL),
   },
-  plugins: [react(), tailwindcss(), seoHead(), spaFallback(), prerenderHeads(), seoFiles()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    seoHead(),
+    spaFallback(),
+    prerenderHeads(),
+    seoFiles(),
+    precompress(),
+  ],
   build: {
     outDir: "dist",
   },
