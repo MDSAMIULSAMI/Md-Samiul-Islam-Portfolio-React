@@ -6,6 +6,7 @@ import Footer from "./components/layout/Footer.jsx";
 import PageTransition from "./components/layout/PageTransition.jsx";
 import SmoothScroll from "./components/layout/SmoothScroll.jsx";
 import Seo from "./components/seo/Seo.jsx";
+import ResumeSkeleton from "./components/ui/ResumeSkeleton.jsx";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import Experience from "./pages/Experience.jsx";
@@ -17,13 +18,27 @@ import LegalTerms from "./pages/LegalTerms.jsx";
 // pdf.js is heavy, so it only loads when someone opens /resume.
 const Resume = lazy(() => import("./pages/Resume.jsx"));
 
+const LOADING = (
+  <div className="grid min-h-[60vh] place-items-center font-mono text-sm text-faint">Loading</div>
+);
+
 export const PAGES = [
   { path: "/", element: <Home /> },
   { path: "/about", element: <About /> },
   { path: "/experience", element: <Experience /> },
   { path: "/projects", element: <Projects /> },
   { path: "/achievements", element: <Achievements /> },
-  { path: "/resume", element: <Resume /> },
+  {
+    path: "/resume",
+    element: <Resume />,
+    // The one lazy route, and its chunk carries pdf.js, so the wait is long
+    // enough to deserve the shape of the page rather than the word "Loading".
+    fallback: (
+      <div className="bleed grid place-items-center py-28 lg:py-32">
+        <ResumeSkeleton />
+      </div>
+    ),
+  },
   { path: "/privacy-policy", element: <LegalPrivacy /> },
   { path: "/terms-of-service", element: <LegalTerms /> },
 ];
@@ -34,20 +49,14 @@ function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait" initial={false}>
       <Routes location={location} key={location.pathname}>
-        {PAGES.map(({ path, element }) => (
+        {PAGES.map(({ path, element, fallback }) => (
           <Route
             key={path}
             path={path}
             element={
               <PageTransition>
                 <Seo path={path} />
-                <Suspense
-                  fallback={
-                    <div className="grid min-h-[60vh] place-items-center font-mono text-sm text-faint">
-                      Loading
-                    </div>
-                  }
-                >
+                <Suspense fallback={fallback ?? LOADING}>
                   {element}
                 </Suspense>
               </PageTransition>

@@ -1,23 +1,23 @@
 // Single source of truth for portfolio content.
-// Mirrors src/Assets/Resume/Md_Samiuls_Resume.pdf, so update both together.
+// Mirrors src/assets/resume/md-samiul-islam-resume.pdf, so update both together.
 
 // Images are bundled locally rather than hot linked: a third party image host
 // is one more thing that can rate limit, rot, or get blocked by an ad blocker
 // (ERR_BLOCKED_BY_CLIENT). Vite hashes and caches these.
-import aiAssistant from "../Assets/media/ai-assistant.jpg";
-import robertaSan from "../Assets/media/roberta-san.jpg";
-import clipSearch from "../Assets/media/clip-search.jpg";
-import nltkSentiment from "../Assets/media/nltk-sentiment.jpg";
-import moviexone from "../Assets/media/moviexone.jpg";
-import chatroom from "../Assets/media/chatroom.jpg";
-import aiImageGenerator from "../Assets/media/ai-image-generator.jpg";
-import blogApp from "../Assets/media/blog-app.jpg";
-import paperTransformer from "../Assets/media/paper-transformer.jpg";
-import paperDeepLearning from "../Assets/media/paper-deep-learning.jpg";
-import certPython from "../Assets/media/cert-python.jpg";
-import certDjango from "../Assets/media/cert-django.jpg";
-import certAiEveryone from "../Assets/media/cert-ai-everyone.jpg";
-import certAiNano from "../Assets/media/cert-ai-nano.jpg";
+import aiAssistant from "../assets/projects/ai-assistant.jpg";
+import robertaSan from "../assets/projects/roberta-san.jpg";
+import clipImageSearch from "../assets/projects/clip-image-search.jpg";
+import nltkSentimentDetector from "../assets/projects/nltk-sentiment-detector.jpg";
+import moviexone from "../assets/projects/moviexone.jpg";
+import realtimeChatRoom from "../assets/projects/realtime-chat-room.jpg";
+import aiImageGenerator from "../assets/projects/ai-image-generator.jpg";
+import samBlogApp from "../assets/projects/sam-blog-app.jpg";
+import transformerPaper from "../assets/publications/transformer-sentiment-analysis.jpg";
+import deepLearningPaper from "../assets/publications/deep-learning-sentiment-analysis.jpg";
+import certProgrammingForEverybody from "../assets/certifications/programming-for-everybody.jpg";
+import certDataScienceDjango from "../assets/certifications/data-science-python-django.jpg";
+import certAiForEveryone from "../assets/certifications/ai-for-everyone.jpg";
+import certBusinessAi from "../assets/certifications/business-implications-of-ai.jpg";
 
 export const profile = {
   name: "Md. Samiul Islam",
@@ -181,7 +181,7 @@ export const projects = [
     description:
       "Encodes prompts and images with CLIP, ranks images by cosine similarity against the prompt embedding and returns the top k matches.",
     stack: ["Python", "CLIP", "OpenAI", "Computer Vision"],
-    image: clipSearch,
+    image: clipImageSearch,
     links: {
       github:
         "https://github.com/MDSAMIULSAMI/Image-Search-by-Text-Prompt-using-CLIP",
@@ -204,7 +204,7 @@ export const projects = [
     description:
       "A browser form that scores submitted text as positive, negative or neutral using the NLTK sentiment analyser behind a Django backend.",
     stack: ["Django", "NLTK", "Python"],
-    image: nltkSentiment,
+    image: nltkSentimentDetector,
     links: { github: "https://github.com/MDSAMIULSAMI/Sentiment_Predictor_NLTK" },
   },
   {
@@ -224,7 +224,7 @@ export const projects = [
     description:
       "A group chat interface built on Socket.IO, with rooms, live presence and message broadcast.",
     stack: ["Socket.IO", "JavaScript", "HTML", "CSS"],
-    image: chatroom,
+    image: realtimeChatRoom,
     links: {
       github: "https://github.com/MDSAMIULSAMI/Simple-Real-Time-Chat-Room",
     },
@@ -246,7 +246,7 @@ export const projects = [
     description:
       "A feature packed blogging platform built with Django for authoring, managing and engaging with posts through a clean, intuitive interface.",
     stack: ["Django", "Python", "SQLite"],
-    image: blogApp,
+    image: samBlogApp,
     links: { github: "https://github.com/MDSAMIULSAMI/Posting_App.git" },
   },
 ];
@@ -256,14 +256,14 @@ export const publications = [
     title:
       "Transformer Based Sentiment Analysis for Classification of Non Depressive and Suicidal Thought from Bangla Text",
     venue: "International Journal of Research in Business and Social Science",
-    image: paperTransformer,
+    image: transformerPaper,
     link: "https://www.researchgate.net/publication/394588211_Transformer-Based_Sentiment_Analysis_for_classification_of_non-depressive_and_suicidal_thought_from_Bangla_Text",
   },
   {
     title:
       "Depressive and Suicidal Text Based Sentiment Analysis in Bangla Using Deep Learning Models",
     venue: "Journal of Business and IT",
-    image: paperDeepLearning,
+    image: deepLearningPaper,
     link: "https://www.researchgate.net/publication/387043086_Depressive_and_Suicidal_Text-Based_Sentiment_Analysis_in_Bangla_Using_Deep_Learning_Models",
   },
 ];
@@ -273,28 +273,28 @@ export const certifications = [
     title: "Programming for Everybody (Getting Started with Python)",
     issuer: "Coursera, University of Michigan",
     date: "October 2020, 18 hours",
-    image: certPython,
+    image: certProgrammingForEverybody,
     link: "https://coursera.org/share/07f76ab8872b96ecba8ff17cee273ef4",
   },
   {
     title: "Data Science Expert with Python Django",
     issuer: "Simplilearn",
     date: "September 2024, 2 hours",
-    image: certDjango,
+    image: certDataScienceDjango,
     link: "https://simpli-web.app.link/e/42zpWLxPuNb",
   },
   {
     title: "AI For Everyone",
     issuer: "Coursera, DeepLearning.AI",
     date: "June 2020, 6 hours",
-    image: certAiEveryone,
+    image: certAiForEveryone,
     link: "https://coursera.org/share/6ecabbbf6c791eac234c47930bf3ed84",
   },
   {
     title: "Business Implications of AI: A Nano course",
     issuer: "Coursera",
     date: "July 2020, 1 hour",
-    image: certAiNano,
+    image: certBusinessAi,
     link: "https://coursera.org/share/a9f5b01fc014113f4ba094aac1c9230a",
   },
 ];

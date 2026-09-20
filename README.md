@@ -1,9 +1,9 @@
 <h1 align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Sora&weight=700&size=34&pause=1000&color=7C5CFF&center=true&vCenter=true&width=620&lines=Md.+Samiul+Islam's+Portfolio;Software+Engineer;AI+Application+Developer" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Sora&weight=700&size=34&pause=1000&color=B7FF72&center=true&vCenter=true&width=620&lines=Md.+Samiul+Islam's+Portfolio;Software+Engineer;AI+Application+Developer" alt="Typing SVG" />
 </h1>
 
 <p align="center">
-  <a href="https://github.com/MDSAMIULSAMI"><img src="https://img.shields.io/badge/GitHub-MDSAMIULSAMI-7c5cff?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
+  <a href="https://github.com/MDSAMIULSAMI"><img src="https://img.shields.io/badge/GitHub-MDSAMIULSAMI-18251d?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
   <a href="https://www.linkedin.com/in/samiulislamsamii"><img src="https://img.shields.io/badge/LinkedIn-Samiul%20Islam-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
   <a href="mailto:mdsamiulislam2172@gmail.com"><img src="https://img.shields.io/badge/Email-mdsamiulislam2172-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
 </p>

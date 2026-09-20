@@ -2,7 +2,7 @@ const base =
   "inline-flex items-center justify-center gap-2 rounded-full font-display font-semibold whitespace-nowrap transition-colors duration-200 disabled:opacity-40 disabled:pointer-events-none";
 
 const variants = {
-  primary: "bg-accent text-accent-fg hover:bg-[#6b49f5]",
+  primary: "bg-accent text-accent-fg hover:bg-[#a5ff52]",
   ghost: "border border-line bg-surface text-heading hover:border-line-strong hover:bg-surface-2",
   quiet: "text-muted hover:text-heading",
 };

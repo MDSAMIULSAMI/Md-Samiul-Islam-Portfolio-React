@@ -8,8 +8,8 @@ import ProjectCard from "../components/ui/ProjectCard.jsx";
 import Card from "../components/ui/Card.jsx";
 import { buttonClass } from "../components/ui/Button.jsx";
 import { profile, socials, stats, projects, experience } from "../data/profile.js";
-import resumePdf from "../Assets/Resume/Md_Samiuls_Resume.pdf";
-import portrait from "../Assets/SamGermany.jpg";
+import resumePdf from "../assets/resume/md-samiul-islam-resume.pdf";
+import portrait from "../assets/profile/portrait.jpg";
 
 const featured = projects.filter((p) => p.featured);
 

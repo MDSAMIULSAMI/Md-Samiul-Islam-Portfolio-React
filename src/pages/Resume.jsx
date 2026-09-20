@@ -3,9 +3,10 @@ import { Document, Page, pdfjs } from "react-pdf";
 import { ChevronLeft, ChevronRight, Download, Mail } from "lucide-react";
 import SectionHead from "../components/ui/SectionHead.jsx";
 import Reveal from "../components/ui/Reveal.jsx";
+import ResumeSkeleton from "../components/ui/ResumeSkeleton.jsx";
 import { buttonClass } from "../components/ui/Button.jsx";
 import { socials } from "../data/profile.js";
-import pdf from "../Assets/Resume/Md_Samiuls_Resume.pdf";
+import pdf from "../assets/resume/md-samiul-islam-resume.pdf";
 
 // Vite resolves and bundles the worker from the installed pdfjs-dist.
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -59,9 +60,7 @@ function Resume() {
           <Document
             file={pdf}
             onLoadSuccess={onLoad}
-            loading={
-              <div className="p-16 font-mono text-sm text-faint">Loading resume</div>
-            }
+            loading={<ResumeSkeleton width={pageWidth} />}
             error={
               <div className="p-16 text-center font-mono text-sm text-faint">
                 Could not render the PDF here. Use the download button above.
@@ -71,6 +70,7 @@ function Resume() {
             <Page
               pageNumber={pageNumber}
               width={pageWidth}
+              loading={<ResumeSkeleton width={pageWidth} />}
               renderTextLayer={false}
               renderAnnotationLayer={false}
               className="overflow-hidden rounded-[10px]"

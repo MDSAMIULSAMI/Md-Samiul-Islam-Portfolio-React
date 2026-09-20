@@ -76,7 +76,7 @@ function Achievements() {
           title="Published research"
           sub="Transformer based sentiment analysis for Bangla text, focused on detecting depressive and suicidal intent."
         />
-        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {publications.map((pub, i) => (
             <AwardCard key={pub.title} item={pub} delay={i * 0.08} cta="Read paper" />
           ))}
@@ -85,7 +85,7 @@ function Achievements() {
 
       <section className="bleed pb-24 lg:pb-32">
         <SectionHead eyebrow="Credentials" title="Certifications" />
-        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {certifications.map((cert, i) => (
             <AwardCard key={cert.title} item={cert} delay={i * 0.06} cta="Verify" />
           ))}

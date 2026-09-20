@@ -4,7 +4,7 @@ import Reveal from "../components/ui/Reveal.jsx";
 import Card from "../components/ui/Card.jsx";
 import { buttonClass } from "../components/ui/Button.jsx";
 import { experience, education, publications } from "../data/profile.js";
-import resumePdf from "../Assets/Resume/Md_Samiuls_Resume.pdf";
+import resumePdf from "../assets/resume/md-samiul-islam-resume.pdf";
 
 function Experience() {
   return (

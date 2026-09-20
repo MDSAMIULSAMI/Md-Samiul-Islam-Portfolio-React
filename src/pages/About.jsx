@@ -9,7 +9,7 @@ import { profile, socials, skillGroups, education, interests, techStack } from "
 const ICONS = { code: Code, database: Database, sparkles: Sparkles, globe: Globe };
 
 const CALENDAR_THEME = {
-  dark: ["#17171f", "#2b2350", "#4b37a8", "#6b4fe0", "#9a82ff"],
+  dark: ["#1d2d23", "#2b3e1e", "#496f2a", "#71bc2f", "#b7ff72"],
 };
 
 function About() {
@@ -176,16 +176,22 @@ function About() {
         <Reveal>
           <Card className="p-6 sm:p-8">
             <div className="overflow-x-auto">
-              <GitHubCalendar
-                username="MDSAMIULSAMI"
-                colorScheme="dark"
-                errorMessage="The contribution graph could not load. It is fetched from a third party API, which some ad blockers block."
-                theme={CALENDAR_THEME}
-                blockSize={13}
-                blockMargin={4}
-                blockRadius={3}
-                fontSize={14}
-              />
+              {/* `w-max min-w-full` lets the inner row be the width of the
+                  graph when it overflows, so the scroll still starts at the
+                  first week, and the width of the card when it fits, which is
+                  what `justify-center` then has to centre against. */}
+              <div className="flex w-max min-w-full justify-center">
+                <GitHubCalendar
+                  username="MDSAMIULSAMI"
+                  colorScheme="dark"
+                  errorMessage="The contribution graph could not load. It is fetched from a third party API, which some ad blockers block."
+                  theme={CALENDAR_THEME}
+                  blockSize={13}
+                  blockMargin={4}
+                  blockRadius={3}
+                  fontSize={14}
+                />
+              </div>
             </div>
             {/* Always present, so the section still leads somewhere when the
                 graph API is unreachable or blocked by an extension. */}

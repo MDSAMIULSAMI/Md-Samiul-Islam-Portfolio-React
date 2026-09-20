@@ -4,22 +4,29 @@
    Design tokens. Flat, solid colours only, no gradients anywhere.
    ------------------------------------------------------------------ */
 @theme {
-  --color-ink: #08080c;
-  --color-ink-soft: #0e0e14;
-  --color-surface: #14141c;
-  --color-surface-2: #1c1c26;
-  --color-line: #272733;
-  --color-line-strong: #3a3a4a;
+  /* The neutral ramp is the primary, #18251d, carried up in lightness at a
+     steady hue so every surface, border and shade of text stays in the same
+     family rather than drifting to a generic grey. */
+  --color-ink: #18251d;
+  --color-ink-soft: #1d2d23;
+  --color-surface: #23362a;
+  --color-surface-2: #2a4133;
+  --color-line: #374b3f;
+  --color-line-strong: #496252;
 
-  --color-body: #d7d7e0;
-  --color-heading: #f5f5fa;
-  --color-muted: #9494a6;
-  --color-faint: #6a6a7d;
+  --color-body: #d7e0da;
+  --color-heading: #f4faf6;
+  --color-muted: #94a69a;
+  --color-faint: #6a7d71;
 
-  --color-accent: #7c5cff;
-  --color-accent-soft: #211a45;
-  --color-accent-fg: #ffffff;
-  --color-positive: #35d07f;
+  /* The accent is light, so anything sitting on it takes the primary as its
+     foreground instead of white. */
+  --color-accent: #b7ff72;
+  --color-accent-soft: #2a3d1c;
+  --color-accent-fg: #18251d;
+  /* Kept a mint rather than another lime, so a "Current"/"Open to work" badge
+     still reads as a separate signal next to the accent. */
+  --color-positive: #3ddc97;
 
   --font-display: "Sora Variable", "Sora", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;

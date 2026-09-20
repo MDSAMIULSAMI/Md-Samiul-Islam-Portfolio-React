@@ -47,7 +47,7 @@ const inter = dataUri(
   "font/woff2"
 );
 // Same photo the hero uses, see src/pages/Home.jsx.
-const portrait = dataUri("src/Assets/SamGermany.jpg", "image/jpeg");
+const portrait = dataUri("src/assets/profile/portrait.jpg", "image/jpeg");
 
 const html = `<!doctype html>
 <html><head><meta charset="utf-8"><style>
@@ -56,33 +56,33 @@ const html = `<!doctype html>
 * { box-sizing: border-box; margin: 0; }
 html, body { width: 1200px; height: 630px; overflow: hidden; }
 body {
-  background: #08080c; color: #d7d7e0; font-family: "Inter", system-ui, sans-serif;
+  background: #18251d; color: #d7e0da; font-family: "Inter", system-ui, sans-serif;
   display: flex; align-items: center; gap: 64px; padding: 0 72px;
   -webkit-font-smoothing: antialiased;
 }
 .left { flex: 1; min-width: 0; }
 .badge {
   display: inline-flex; align-items: center; gap: 10px; margin-bottom: 28px;
-  padding: 8px 16px 8px 8px; border: 1px solid #272733; border-radius: 999px;
-  background: #14141c; font-size: 19px; color: #9494a6;
+  padding: 8px 16px 8px 8px; border: 1px solid #374b3f; border-radius: 999px;
+  background: #23362a; font-size: 19px; color: #94a69a;
 }
 .mark {
-  width: 36px; height: 36px; border-radius: 10px; background: #7c5cff; color: #fff;
+  width: 36px; height: 36px; border-radius: 10px; background: #b7ff72; color: #18251d;
   font-family: "Sora"; font-weight: 800; font-size: 15px; display: grid; place-items: center;
 }
 h1 {
   font-family: "Sora"; font-weight: 700; font-size: 72px; line-height: 1.05;
-  letter-spacing: -0.03em; color: #f5f5fa; margin-bottom: 20px;
+  letter-spacing: -0.03em; color: #f4faf6; margin-bottom: 20px;
 }
-.role { font-family: "Sora"; font-weight: 700; font-size: 34px; color: #7c5cff; letter-spacing: -0.02em; margin-bottom: 26px; }
-.sub { font-size: 24px; line-height: 1.5; color: #9494a6; max-width: 15.5em; }
-.rule { height: 1px; background: #272733; margin: 34px 0 26px; width: 100%; }
+.role { font-family: "Sora"; font-weight: 700; font-size: 34px; color: #b7ff72; letter-spacing: -0.02em; margin-bottom: 26px; }
+.sub { font-size: 24px; line-height: 1.5; color: #94a69a; max-width: 15.5em; }
+.rule { height: 1px; background: #374b3f; margin: 34px 0 26px; width: 100%; }
 .stack { display: flex; flex-wrap: wrap; gap: 10px; }
-.chip { padding: 7px 15px; border: 1px solid #272733; border-radius: 999px; background: #14141c; font-size: 19px; color: #d7d7e0; }
+.chip { padding: 7px 15px; border: 1px solid #374b3f; border-radius: 999px; background: #23362a; font-size: 19px; color: #d7e0da; }
 .right { flex: 0 0 340px; }
 /* Within a percent of the source photo's 3:4, so object-fit has almost
    nothing to crop. A square frame here cut the face off at the edge. */
-.photo { width: 340px; height: 445px; border-radius: 24px; object-fit: cover; object-position: center 30%; border: 1px solid #272733; }
+.photo { width: 340px; height: 445px; border-radius: 24px; object-fit: cover; object-position: center 30%; border: 1px solid #374b3f; }
 </style></head><body>
   <div class="left">
     <div class="badge"><span class="mark">SI</span> Dhaka, Bangladesh</div>
