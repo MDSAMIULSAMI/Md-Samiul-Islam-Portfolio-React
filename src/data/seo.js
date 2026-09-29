@@ -193,7 +193,8 @@ export function structuredData(siteUrl = SITE.url) {
         url: `${origin}/`,
         name: SITE.title,
         isPartOf: { "@id": `${origin}/#website` },
-        about: { "@id": `${origin}/#person` },
+        // mainEntity rather than about: Google rejects a ProfilePage without it.
+        mainEntity: { "@id": `${origin}/#person` },
         inLanguage: SITE.lang,
       },
     ],

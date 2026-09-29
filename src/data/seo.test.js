@@ -71,7 +71,8 @@ describe("structured data", () => {
     const [person, website, page] = data["@graph"];
     expect(person["@id"]).toBe("https://example.com/#person");
     expect(website.publisher["@id"]).toBe(person["@id"]);
-    expect(page.about["@id"]).toBe(person["@id"]);
+    // Google's ProfilePage rich result requires mainEntity specifically.
+    expect(page.mainEntity["@id"]).toBe(person["@id"]);
     expect(page.isPartOf["@id"]).toBe(website["@id"]);
     expect(person.image).toMatch(/^https:\/\/example\.com\//);
   });
