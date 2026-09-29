@@ -41,6 +41,7 @@ export const profile = {
 export const socials = {
   github: "https://github.com/MDSAMIULSAMI",
   linkedin: "https://www.linkedin.com/in/samiulislamsamii",
+  upwork: "https://www.upwork.com/freelancers/~01a6e46c59cff137a9",
   codeforces: "https://codeforces.com/profile/Md_Samiul_Islam",
   leetcode: "https://leetcode.com/u/mdsamiulislam2172",
   instagram: "https://www.instagram.com/__samiul__sami__/",

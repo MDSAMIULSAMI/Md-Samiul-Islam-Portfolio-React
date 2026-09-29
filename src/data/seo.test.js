@@ -60,6 +60,7 @@ describe("structured data", () => {
     expect(IDENTITY.alumniOf).toBe(education.school);
     expect(IDENTITY.sameAs).toContain(socials.github);
     expect(IDENTITY.sameAs).toContain(socials.linkedin);
+    expect(IDENTITY.sameAs).toContain(socials.upwork);
   });
 
   test("emits a linked Person, WebSite and ProfilePage graph", () => {

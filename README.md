@@ -33,7 +33,7 @@ so updating the CV means editing a single file.
 | **Build** | Vite 8, `@vitejs/plugin-react` |
 | **UI** | React 19, React Router 7 |
 | **Styling** | Tailwind CSS 4 (`@tailwindcss/vite`), design tokens via `@theme` |
-| **Icons** | `lucide-react` for UI icons, inline SVG for the five social brand marks |
+| **Icons** | `lucide-react` for UI icons, inline SVG for the six social brand marks |
 | **Motion** | `motion` for page transitions, scroll reveals and the animated nav pill |
 | **Fonts** | Sora, Inter, JetBrains Mono, self hosted via `@fontsource-variable` |
 | **PDF** | `react-pdf` 11, lazy loaded so pdf.js stays out of the main bundle |
@@ -191,6 +191,7 @@ a file that changes once a year.
 - **Email:** mdsamiulislam2172@gmail.com
 - **GitHub:** [MDSAMIULSAMI](https://github.com/MDSAMIULSAMI)
 - **LinkedIn:** [Samiul Islam](https://www.linkedin.com/in/samiulislamsamii)
+- **Upwork:** [Md. Samiul Islam](https://www.upwork.com/freelancers/~01a6e46c59cff137a9)
 - **Codeforces:** [Md_Samiul_Islam](https://codeforces.com/profile/Md_Samiul_Islam)
 - **LeetCode:** [mdsamiulislam2172](https://leetcode.com/u/mdsamiulislam2172)
 

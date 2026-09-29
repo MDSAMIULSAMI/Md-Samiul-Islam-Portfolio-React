@@ -1,6 +1,7 @@
 import {
   GithubIcon,
   LinkedinIcon,
+  UpworkIcon,
   InstagramIcon,
   CodeforcesIcon,
   LeetcodeIcon,
@@ -10,6 +11,7 @@ import { socials } from "../../data/profile.js";
 const LINKS = [
   { href: socials.github, label: "GitHub", Icon: GithubIcon },
   { href: socials.linkedin, label: "LinkedIn", Icon: LinkedinIcon },
+  { href: socials.upwork, label: "Upwork", Icon: UpworkIcon },
   { href: socials.codeforces, label: "Codeforces", Icon: CodeforcesIcon },
   { href: socials.leetcode, label: "LeetCode", Icon: LeetcodeIcon },
   { href: socials.instagram, label: "Instagram", Icon: InstagramIcon },

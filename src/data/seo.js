@@ -130,6 +130,7 @@ export const IDENTITY = {
   sameAs: [
     "https://github.com/MDSAMIULSAMI",
     "https://www.linkedin.com/in/samiulislamsamii",
+    "https://www.upwork.com/freelancers/~01a6e46c59cff137a9",
     "https://codeforces.com/profile/Md_Samiul_Islam",
     "https://leetcode.com/u/mdsamiulislam2172",
   ],
