@@ -1,35 +1,41 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import { copyFileSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
-import { dirname, extname, join, resolve } from "node:path";
-import { brotliCompressSync, constants, gzipSync } from "node:zlib";
+import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 import { PAGE_SEO, indexablePaths, structuredData } from "./src/data/seo.js";
 
-// Root by default, which is what Railway and a custom domain serve from.
-// GitHub Pages serves this repo from a project subpath instead, so the
-// `deploy` script sets VITE_BASE=/samiuls-portfolio-react/ for that build only.
+// Root by default, which is what Cloudflare serves from. GitHub Pages serves
+// this repo from a project subpath instead, so the `deploy` script sets
+// VITE_BASE=/samiuls-portfolio-react/ for that build only.
 const BASE = process.env.VITE_BASE || "/";
+
+/** The custom domain, and so the origin every production build points at. */
+const PRODUCTION_URL = "https://mdsamiulislam.com";
 
 /**
  * Absolute origin this build will be published under. Canonical tags, og:url
  * and sitemap.xml are all meaningless without it, and pointing them at the
  * wrong host is worse than omitting them, so it is resolved, never guessed:
  *
- *   1. VITE_SITE_URL, for a custom domain or any host not covered below.
- *   2. RAILWAY_PUBLIC_DOMAIN, which Railway injects into the build environment
- *      itself, so a Railway deploy needs no configuration at all.
- *   3. The GitHub Pages project URL, but only for the build that targets it.
+ *   1. VITE_SITE_URL, to point a build at any other host.
+ *   2. The GitHub Pages project URL, but only for the build that targets it.
+ *   3. PRODUCTION_URL for every other build. Cloudflare injects nothing that
+ *      names the custom domain, and falling through to the dev server here
+ *      would ship a sitemap and canonical tags that all say localhost.
  *   4. The dev server, which keeps `npm run dev` self consistent.
  */
-function resolveSiteUrl() {
+function resolveSiteUrl(command) {
   if (process.env.VITE_SITE_URL) return process.env.VITE_SITE_URL.replace(/\/+$/, "");
-  if (process.env.RAILWAY_PUBLIC_DOMAIN) return `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`;
   if (BASE !== "/") return `https://mdsamiulsami.github.io${BASE}`.replace(/\/+$/, "");
+  if (command === "build") return PRODUCTION_URL;
   return "http://localhost:5173";
 }
 
-const SITE_URL = resolveSiteUrl();
+// Only the config function below knows whether this is a build or the dev
+// server, so it assigns this. Every plugin reads it inside a hook, which Vite
+// runs after that.
+let SITE_URL;
 
 /** Join the deploy origin (which may carry a subpath) with a route path. */
 const urlFor = (path) => `${SITE_URL}${path === "/" ? "/" : path}`;
@@ -98,9 +104,9 @@ function seoHead() {
 }
 
 /**
- * GitHub Pages has no SPA rewrite, so it answers unknown paths with 404.html.
- * Shipping a copy of index.html there makes deep links and refreshes work.
- * On Railway, server.js handles the fallback and this file is unused.
+ * Cloudflare and GitHub Pages both answer unknown paths with 404.html, so a
+ * copy of index.html there lets the app redirect old or mistyped links, while
+ * the 404 status keeps those URLs out of search results.
  */
 function spaFallback() {
   return {
@@ -117,9 +123,15 @@ function spaFallback() {
  * response. A single page app only ships one, so every route would otherwise
  * advertise the home page's title, description and share card.
  *
- * This writes a copy of the shell per route to dist/<route>/index.html with
- * that route's tags already substituted. React then takes over on the client
- * and the two agree, because both read src/data/seo.js.
+ * This writes a copy of the shell per route to dist/<route>.html with that
+ * route's tags already substituted. React then takes over on the client and
+ * the two agree, because both read src/data/seo.js.
+ *
+ * A flat <route>.html rather than <route>/index.html, because Cloudflare only
+ * serves a directory index at the trailing slash URL: /about would answer with
+ * a redirect to /about/, and Search Console reports every sitemap URL that
+ * redirects as "Page with redirect" instead of indexing it. Cloudflare and
+ * GitHub Pages both serve a flat file at /about as it is.
  */
 function prerenderHeads() {
   return {
@@ -146,7 +158,7 @@ function prerenderHeads() {
         html = setTag(html, "twitterDescription", description);
         html = setTag(html, "robots", noindex ? "noindex, follow" : "index, follow");
 
-        const file = resolve(out, `.${path}/index.html`);
+        const file = resolve(out, `.${path}.html`);
         mkdirSync(dirname(file), { recursive: true });
         writeFileSync(file, html);
       }
@@ -201,102 +213,32 @@ function seoFiles() {
   };
 }
 
-/**
- * Writes a .br and a .gz beside every compressible build artefact.
- *
- * server.js serves those bytes straight off disk. Compressing per request
- * instead cost about 18ms of CPU on the main bundle and held four cores at
- * roughly 250 req/s, which is a small container's entire capacity spent
- * recomputing an answer that never changes. Doing it here happens once, and
- * affords the slowest and smallest settings a request handler could never
- * justify, which is also what makes brotli worth offering at all.
- *
- * Must run last: prerenderHeads and seoFiles write files of their own in
- * closeBundle, and those need compressing too. Every hook here is synchronous,
- * so plugin order is enough to guarantee it.
- */
-function precompress() {
-  // Kept in step with COMPRESSIBLE in server.js. Formats that arrive already
-  // compressed, which is every image, font and the PDF, only grow.
-  const EXTENSIONS = new Set([
-    ".html", ".js", ".mjs", ".css", ".json", ".svg", ".txt", ".xml", ".map", ".webmanifest",
-  ]);
-  // Under about a kilobyte the saving is a rounding error and a gzip header can
-  // make the file bigger, so those are left as they are.
-  const MIN_BYTES = 1024;
+export default defineConfig(({ command }) => {
+  SITE_URL = resolveSiteUrl(command);
 
   return {
-    name: "precompress-assets",
-    // vitest loads this config too, and its teardown fires closeBundle as
-    // well, which would recompress dist on every test run.
-    apply: "build",
-    closeBundle() {
-      let count = 0;
-      let before = 0;
-      let after = 0;
-
-      const walk = (dir) => {
-        for (const entry of readdirSync(dir, { withFileTypes: true })) {
-          const path = join(dir, entry.name);
-          if (entry.isDirectory()) {
-            walk(path);
-            continue;
-          }
-          if (!EXTENSIONS.has(extname(entry.name).toLowerCase())) continue;
-
-          const raw = readFileSync(path);
-          if (raw.length < MIN_BYTES) continue;
-
-          const br = brotliCompressSync(raw, {
-            params: {
-              [constants.BROTLI_PARAM_QUALITY]: constants.BROTLI_MAX_QUALITY,
-              [constants.BROTLI_PARAM_SIZE_HINT]: raw.length,
-            },
-          });
-          writeFileSync(`${path}.br`, br);
-          writeFileSync(`${path}.gz`, gzipSync(raw, { level: 9 }));
-
-          count += 1;
-          before += raw.length;
-          after += br.length;
-        }
-      };
-
-      walk(resolve(process.cwd(), "dist"));
-
-      const kb = (bytes) => `${(bytes / 1024).toFixed(0)} kB`;
-      console.log(
-        `\n\x1b[32m✓\x1b[0m precompressed ${count} files: ` +
-          `${kb(before)} → ${kb(after)} brotli ` +
-          `(${(100 - (after / before) * 100).toFixed(0)}% smaller)`
-      );
+    base: command === "build" ? BASE : "/",
+    define: {
+      // Read by src/data/seo.js, so the canonical and og:url React writes during
+      // client side navigation match what the build baked into the static heads.
+      __SITE_URL__: JSON.stringify(SITE_URL),
+    },
+    plugins: [
+      react(),
+      tailwindcss(),
+      seoHead(),
+      spaFallback(),
+      prerenderHeads(),
+      seoFiles(),
+    ],
+    build: {
+      outDir: "dist",
+    },
+    test: {
+      environment: "jsdom",
+      globals: true,
+      setupFiles: "./vitest.setup.js",
+      css: true,
     },
   };
-}
-
-export default defineConfig(({ command }) => ({
-  base: command === "build" ? BASE : "/",
-  define: {
-    // Read by src/data/seo.js, so the canonical and og:url React writes during
-    // client side navigation match what the build baked into the static heads.
-    __SITE_URL__: JSON.stringify(SITE_URL),
-  },
-  plugins: [
-    react(),
-    tailwindcss(),
-    seoHead(),
-    spaFallback(),
-    prerenderHeads(),
-    seoFiles(),
-    precompress(),
-  ],
-  build: {
-    outDir: "dist",
-  },
-  test: {
-    environment: "jsdom",
-    globals: true,
-    setupFiles: "./vitest.setup.js",
-    css: true,
-  },
-}));
+});

@@ -38,7 +38,7 @@ so updating the CV means editing a single file.
 | **Fonts** | Sora, Inter, JetBrains Mono, self hosted via `@fontsource-variable` |
 | **PDF** | `react-pdf` 11, lazy loaded so pdf.js stays out of the main bundle |
 | **Testing** | Vitest, Testing Library, jsdom |
-| **Deploy** | Railway (`server.js`), GitHub Pages via `gh-pages` |
+| **Deploy** | Cloudflare (`mdsamiulislam.com`), GitHub Pages via `gh-pages` |
 | **SEO** | Per route `<head>` prerendered at build, JSON-LD, generated sitemap |
 
 ## Project structure
@@ -48,9 +48,6 @@ sami-portfolio/
 ├── index.html                  # Vite entry document
 ├── vite.config.js              # base path, Tailwind, SPA 404 fallback,
 │                               # per route <head> prerender, sitemap, robots
-├── railway.json                # build and start commands for Railway
-├── nixpacks.toml               # keeps devDependencies during Railway's install
-├── server.js                   # dependency free static server for container hosts
 ├── scripts/                    # one off generators (the social share card)
 ├── public/                     # favicon, manifest, og-cover.png
 └── src/
@@ -79,7 +76,6 @@ npm install          # Node 20.19+ / 22.12+ recommended
 npm run dev          # http://localhost:5173
 npm run build        # outputs to dist/, served from the root path
 npm run preview      # preview the production build
-npm start            # serve dist/ the way a container host does (build first)
 npm test             # run the Vitest suite
 npm run deploy       # build for the gh-pages subpath and publish
 ```
@@ -95,36 +91,12 @@ through `import.meta.env.BASE_URL`.
 
 | Host | Command | Base | SPA routing |
 |------|---------|------|-------------|
-| **Railway** (or any container host) | `npm run build`, then `node server.js` | `/` | `server.js` falls back to `index.html` |
-| **GitHub Pages** (project subpath) | `npm run deploy` | `/samiuls-portfolio-react/` | a `404.html` copy of `index.html` is emitted on build |
+| **Cloudflare** (`mdsamiulislam.com`) | `npm run build`, output directory `dist` | `/` | a `404.html` copy of `index.html` is emitted on build |
+| **GitHub Pages** (project subpath) | `npm run deploy` | `/samiuls-portfolio-react/` | the same `404.html` |
 
-Railway needs no setup beyond the committed `railway.json` and `nixpacks.toml`.
-Do not set `VITE_BASE` there, the default `/` is correct. For a different
-GitHub Pages repo name, change `build:ghpages` in `package.json`.
-
-### Running on Railway
-
-This is a static build, so the container needs a real HTTP server rather than
-Vite. `server.js` is a dependency free static server that:
-
-- listens on `$PORT` and binds `0.0.0.0`, which the health check requires
-- serves `dist/` and falls back to `index.html` for client side routes
-- gzips text responses (the main bundle drops from 487 kB to 155 kB)
-- marks hashed assets `immutable` and the HTML shell `no-cache`
-- exits cleanly on `SIGTERM` so a redeploy is not logged as a crash
-
-Two things bite on Railway and both are handled in the repo:
-
-1. `npm start` must not be `vite`. The dev server ignores `$PORT` and binds to
-   localhost, so the health check never passes and the container restart loops.
-   `start` is `node server.js`.
-2. Railway sets `NODE_ENV=production`, and `npm ci` then skips
-   devDependencies, so `vite` goes missing and the build fails with
-   `vite: not found`. `nixpacks.toml` pins the install to
-   `npm ci --include=dev`.
-
-Railway's free tier is fine for this. GitHub Pages is also set up as a
-zero cost fallback via `npm run deploy`.
+Cloudflare needs no environment variables: do not set `VITE_BASE` there, the
+default `/` is correct. For a different GitHub Pages repo name, change
+`build:ghpages` in `package.json`.
 
 ## Pages
 
@@ -149,8 +121,8 @@ that from happening, and all three read the same rows in
    (Facebook, LinkedIn, Slack) never run JavaScript, so whatever is in the
    HTML response is all they will ever see.
 2. **The build** writes a copy of the shell per route to
-   `dist/<route>/index.html` with that route's tags already substituted, and
-   emits `sitemap.xml` and `robots.txt`. `server.js` serves those copies, so
+   `dist/<route>.html` with that route's tags already substituted, and
+   emits `sitemap.xml` and `robots.txt`. Cloudflare serves those copies, so
    `GET /projects` returns HTML that already says *Projects*. If a tag in
    `index.html` is reformatted so the substitution no longer matches, the
    build **fails** rather than shipping the wrong card.
@@ -171,9 +143,9 @@ it in order:
 
 | Source | When |
 |--------|------|
-| `VITE_SITE_URL` | A custom domain, or any host not covered below |
-| `RAILWAY_PUBLIC_DOMAIN` | Injected by Railway into its own build, so the deploy needs no setup |
+| `VITE_SITE_URL` | Any host other than the ones below |
 | `https://mdsamiulsami.github.io/samiuls-portfolio-react` | Only the `build:ghpages` build |
+| `https://mdsamiulislam.com` | Every other `npm run build`, including Cloudflare's |
 | `http://localhost:5173` | `npm run dev` |
 
 ### The share card
